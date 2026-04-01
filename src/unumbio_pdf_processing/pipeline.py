@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""End-to-end helpers to build and write the final output file."""
+
 import json
 from pathlib import Path
 
@@ -10,6 +12,7 @@ from unumbio_pdf_processing.section_detection import detect_b1_page_range
 
 
 def build_output_document(source_path: Path) -> dict:
+    """Run the full in-memory pipeline for the source bulletin."""
     pages = load_bulletin(source_path)
     start_page, end_page = detect_b1_page_range(pages)
     b1_pages = select_b1_pages(pages, start_page, end_page)
@@ -19,6 +22,7 @@ def build_output_document(source_path: Path) -> dict:
 
 
 def write_output_document(source_path: Path, output_path: Path) -> dict:
+    """Build the output document and persist it as JSON."""
     document = build_output_document(source_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as file:

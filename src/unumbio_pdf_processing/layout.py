@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""Utilities to rebuild reading order from PDF geometry."""
+
 import re
 from dataclasses import dataclass
 
@@ -27,6 +29,8 @@ FOOTER_TEXT_RE = re.compile(r"^\d{4}/\d{3}$")
 
 @dataclass(frozen=True)
 class TextBlock:
+    """Normalized text element with the geometry needed for ordering."""
+
     page: int
     text: str
     x0: float
@@ -40,10 +44,12 @@ class TextBlock:
 
 
 def clean_text(value: str) -> str:
+    """Collapse whitespace so PDF text fragments become easier to compare."""
     return " ".join(value.split()).strip()
 
 
 def extract_text_blocks(page: dict) -> list[TextBlock]:
+    """Convert raw `textboxhorizontal` entries into normalized blocks."""
     page_number = page.get("page")
     if not isinstance(page_number, int):
         return []
@@ -79,6 +85,7 @@ def extract_text_blocks(page: dict) -> list[TextBlock]:
 
 
 def detect_content_top(blocks: list[TextBlock]) -> float:
+    """Use the first INID marker as the start of the useful content area."""
     marker_tops = [block.top for block in blocks if block.text in INID_MARKERS]
     if not marker_tops:
         return 0.0
@@ -86,12 +93,14 @@ def detect_content_top(blocks: list[TextBlock]) -> float:
 
 
 def is_footer_noise(block: TextBlock) -> bool:
+    """Filter known footer markers that should never become record content."""
     if block.top >= 800:
         return True
     return bool(FOOTER_TEXT_RE.fullmatch(block.text))
 
 
 def content_text_blocks(page: dict) -> list[TextBlock]:
+    """Keep only the blocks that belong to the real record area."""
     blocks = extract_text_blocks(page)
     content_top = detect_content_top(blocks)
     return [
@@ -102,6 +111,7 @@ def content_text_blocks(page: dict) -> list[TextBlock]:
 
 
 def detect_column_split(page: dict) -> float:
+    """Approximate the page column separator using half the page width."""
     width = page.get("width")
     if not isinstance(width, (int, float)):
         raise ValueError("Page width is missing or invalid.")
@@ -109,6 +119,7 @@ def detect_column_split(page: dict) -> float:
 
 
 def split_columns(page: dict) -> tuple[list[TextBlock], list[TextBlock]]:
+    """Split content blocks into left and right reading columns."""
     split_x = detect_column_split(page)
     left: list[TextBlock] = []
     right: list[TextBlock] = []
@@ -125,5 +136,6 @@ def split_columns(page: dict) -> tuple[list[TextBlock], list[TextBlock]]:
 
 
 def page_reading_order(page: dict) -> list[TextBlock]:
+    """Return a simple left-to-right reading order for one page."""
     left, right = split_columns(page)
     return [*left, *right]

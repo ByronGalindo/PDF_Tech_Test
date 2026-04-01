@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""Validation helpers for the extracted output records."""
+
 import re
 from collections import Counter
 
@@ -10,6 +12,7 @@ REQUIRED_FIELDS = ("_PAGE", "111", "151", "450", "210", "400")
 
 
 def validate_record(record: dict) -> list[str]:
+    """Return a list of structural issues found in one extracted record."""
     issues: list[str] = []
 
     for field in REQUIRED_FIELDS:
@@ -51,6 +54,7 @@ def validate_record(record: dict) -> list[str]:
 
 
 def summarize_validation(records: list[dict]) -> dict:
+    """Summarize validation issues and duplicate record numbers."""
     record_issues: list[dict] = []
     number_counts = Counter(
         record["111"]

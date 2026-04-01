@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""Small inspection helpers used while iterating on the parser."""
+
 import json
 from pathlib import Path
 from statistics import median
@@ -17,6 +19,7 @@ DEFAULT_SOURCE = Path("UNUMBIO PDF PROCESSING") / "BUL_EM_TM_2024000007_001.json
 
 
 def load_bulletin(path: Path) -> list[dict]:
+    """Load the extracted bulletin JSON from disk."""
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
 
@@ -26,10 +29,12 @@ def select_b1_pages(
     start_page: int,
     end_page: int,
 ) -> list[dict]:
+    """Return only the pages that fall inside the detected B.1 range."""
     return [page for page in pages if start_page <= page.get("page", -1) <= end_page]
 
 
 def summarize_page(page: dict) -> dict:
+    """Return a quick geometric summary of one page."""
     textboxes = page.get("textboxhorizontal", [])
     x0_values = sorted(
         box["x0"]
@@ -51,10 +56,12 @@ def summarize_page(page: dict) -> dict:
 
 
 def clean_text(value: str) -> str:
+    """Collapse whitespace for preview output."""
     return " ".join(value.split())
 
 
 def summarize_columns(page: dict, sample_size: int = 8) -> dict:
+    """Preview how one page was split into reading columns."""
     left, right = split_columns(page)
     content_blocks = content_text_blocks(page)
     ordered_blocks = page_reading_order(page)
@@ -71,6 +78,7 @@ def summarize_columns(page: dict, sample_size: int = 8) -> dict:
 
 
 def summarize_b1_range(path: Path = DEFAULT_SOURCE) -> dict:
+    """Summarize the detected B.1 section and its first page layout."""
     pages = load_bulletin(path)
     start_page, end_page = detect_b1_page_range(pages)
     selected_pages = select_b1_pages(pages, start_page, end_page)

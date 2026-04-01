@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""Grouping helpers for raw records inside section B.1."""
+
 from dataclasses import dataclass
 
 from unumbio_pdf_processing.layout import TextBlock, page_reading_order
@@ -10,6 +12,8 @@ RECORD_START_MARKER = "111"
 
 @dataclass(frozen=True)
 class RawRecord:
+    """Sequence of blocks that belong to the same detected record."""
+
     start_page: int
     blocks: tuple[TextBlock, ...]
 
@@ -27,6 +31,7 @@ class RawRecord:
 
 
 def iter_b1_blocks(pages: list[dict]) -> list[TextBlock]:
+    """Flatten the ordered blocks from all selected B.1 pages."""
     blocks: list[TextBlock] = []
     for page in pages:
         blocks.extend(page_reading_order(page))
@@ -34,6 +39,7 @@ def iter_b1_blocks(pages: list[dict]) -> list[TextBlock]:
 
 
 def group_raw_records(pages: list[dict]) -> list[RawRecord]:
+    """Start a new record every time the `111` INID marker appears."""
     blocks = iter_b1_blocks(pages)
     records: list[RawRecord] = []
     current_blocks: list[TextBlock] = []
@@ -67,6 +73,7 @@ def group_raw_records(pages: list[dict]) -> list[RawRecord]:
 
 
 def summarize_raw_record(record: RawRecord, sample_size: int = 16) -> dict:
+    """Return a compact preview of a raw grouped record."""
     return {
         "_PAGE": record.start_page,
         "block_count": len(record.blocks),

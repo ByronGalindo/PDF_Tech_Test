@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""Analysis helpers to inspect the quality of raw grouped records."""
+
 from collections import Counter
 from statistics import median
 
@@ -7,6 +9,7 @@ from unumbio_pdf_processing.records import RawRecord
 
 
 def summarize_raw_records(records: list[RawRecord]) -> dict:
+    """Summarize raw-record shape to spot suspicious grouping patterns."""
     if not records:
         return {
             "record_count": 0,

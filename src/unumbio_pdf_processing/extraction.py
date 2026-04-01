@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+"""Extraction helpers that map raw records into the target schema."""
+
 from unumbio_pdf_processing.records import RawRecord
 
 
@@ -9,6 +11,7 @@ TARGET_FIELDS = set(TARGET_SINGLE_FIELDS) | set(TARGET_MULTI_FIELDS)
 
 
 def extract_record(record: RawRecord) -> dict:
+    """Extract the expected INID fields from one grouped raw record."""
     extracted: dict[str, object] = {"_PAGE": record.start_page}
 
     current_field: str | None = None
@@ -44,4 +47,5 @@ def extract_record(record: RawRecord) -> dict:
 
 
 def extract_records(records: list[RawRecord]) -> list[dict]:
+    """Extract all grouped records into JSON-ready dictionaries."""
     return [extract_record(record) for record in records]
