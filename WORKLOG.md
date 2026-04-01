@@ -18,6 +18,7 @@ Short log:
 - Added footer-noise filtering for page markers such as `2024/007`.
 - Added the first output builder for the final `B -> 1` JSON shape.
 - Moved generated output to `solution/output` to keep test inputs untouched.
+- Added a basic validation pass for missing fields, duplicates, and field format.
 
 Next:
 - inspect page layout,
@@ -40,6 +41,7 @@ Resumen corto:
 - Agregué un filtro de ruido para pies de página como `2024/007`.
 - Agregué el primer generador del JSON final con la forma `B -> 1`.
 - Dejé la salida generada en `solution/output` para no mezclarla con los insumos.
+- Agregué una validación básica para campos faltantes, duplicados y formato.
 
 Siguiente:
 - revisar el layout de las páginas,
