@@ -20,6 +20,7 @@ def build_output_document(source_path: Path) -> dict:
 
 def write_output_document(source_path: Path, output_path: Path) -> dict:
     document = build_output_document(source_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as file:
         json.dump(document, file, indent=2, ensure_ascii=False)
         file.write("\n")

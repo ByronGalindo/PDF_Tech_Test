@@ -21,6 +21,7 @@ Short log:
 - Added a basic validation pass for missing fields, duplicates, and field format.
 - Added a deeper raw-record analysis for cross-page and suspiciously short records.
 - Added validation directly against the generated JSON file in `solution/output`.
+- Added a single entry script to generate and validate the output in one run.
 
 Next:
 - inspect page layout,
@@ -46,6 +47,7 @@ Resumen corto:
 - Agregué una validación básica para campos faltantes, duplicados y formato.
 - Agregué un análisis más fino de registros crudos para ver cruces de página y casos cortos.
 - Agregué validación directa sobre el JSON generado en `solution/output`.
+- Agregué un script único para generar y validar la salida en una sola corrida.
 
 Siguiente:
 - revisar el layout de las páginas,
