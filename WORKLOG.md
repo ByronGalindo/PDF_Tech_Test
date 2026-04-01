@@ -13,6 +13,11 @@ Short log:
 - Added the first section detection logic from page content.
 - Added an initial two-column layout helper for inspection.
 - Added a first content-area filter to skip page headers.
+- Added a first record grouping pass using `111` as the record anchor.
+- Added a first field extraction pass for the target INID fields.
+- Added footer-noise filtering for page markers such as `2024/007`.
+- Added the first output builder for the final `B -> 1` JSON shape.
+- Moved generated output to `solution/output` to keep test inputs untouched.
 
 Next:
 - inspect page layout,
@@ -30,6 +35,11 @@ Resumen corto:
 - Agregué la primera lógica para detectar la sección desde el contenido.
 - Agregué una primera ayuda de layout para inspeccionar las dos columnas.
 - Agregué un primer filtro de área útil para saltar encabezados de página.
+- Agregué una primera agrupación de registros usando `111` como ancla.
+- Agregué una primera extracción de los campos INID objetivo.
+- Agregué un filtro de ruido para pies de página como `2024/007`.
+- Agregué el primer generador del JSON final con la forma `B -> 1`.
+- Dejé la salida generada en `solution/output` para no mezclarla con los insumos.
 
 Siguiente:
 - revisar el layout de las páginas,

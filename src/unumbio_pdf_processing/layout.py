@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 
@@ -20,6 +21,8 @@ INID_MARKERS = {
     "546",
     "554",
 }
+
+FOOTER_TEXT_RE = re.compile(r"^\d{4}/\d{3}$")
 
 
 @dataclass(frozen=True)
@@ -82,10 +85,20 @@ def detect_content_top(blocks: list[TextBlock]) -> float:
     return min(marker_tops)
 
 
+def is_footer_noise(block: TextBlock) -> bool:
+    if block.top >= 800:
+        return True
+    return bool(FOOTER_TEXT_RE.fullmatch(block.text))
+
+
 def content_text_blocks(page: dict) -> list[TextBlock]:
     blocks = extract_text_blocks(page)
     content_top = detect_content_top(blocks)
-    return [block for block in blocks if block.bottom >= content_top]
+    return [
+        block
+        for block in blocks
+        if block.bottom >= content_top and not is_footer_noise(block)
+    ]
 
 
 def detect_column_split(page: dict) -> float:
