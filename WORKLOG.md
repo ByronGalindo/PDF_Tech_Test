@@ -11,6 +11,8 @@ Short log:
 - Wrote the first planning, notes, and estimate files.
 - Created the first Python scaffold and a simple `B.1` inspection script.
 - Added the first section detection logic from page content.
+- Added an initial two-column layout helper for inspection.
+- Added a first content-area filter to skip page headers.
 
 Next:
 - inspect page layout,
@@ -26,6 +28,8 @@ Resumen corto:
 - Dejé creados los archivos iniciales de plan, notas y estimación.
 - Creé el primer esqueleto en Python y un script simple para inspeccionar `B.1`.
 - Agregué la primera lógica para detectar la sección desde el contenido.
+- Agregué una primera ayuda de layout para inspeccionar las dos columnas.
+- Agregué un primer filtro de área útil para saltar encabezados de página.
 
 Siguiente:
 - revisar el layout de las páginas,

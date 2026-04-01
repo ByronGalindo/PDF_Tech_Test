@@ -4,6 +4,12 @@ import json
 from pathlib import Path
 from statistics import median
 
+from unumbio_pdf_processing.layout import (
+    content_text_blocks,
+    detect_content_top,
+    page_reading_order,
+    split_columns,
+)
 from unumbio_pdf_processing.section_detection import detect_b1_page_range
 
 
@@ -48,6 +54,22 @@ def clean_text(value: str) -> str:
     return " ".join(value.split())
 
 
+def summarize_columns(page: dict, sample_size: int = 8) -> dict:
+    left, right = split_columns(page)
+    content_blocks = content_text_blocks(page)
+    ordered_blocks = page_reading_order(page)
+    return {
+        "page": page.get("page"),
+        "content_top": round(detect_content_top(content_blocks), 3) if content_blocks else None,
+        "content_blocks": len(content_blocks),
+        "left_count": len(left),
+        "right_count": len(right),
+        "left_sample": [block.text for block in left[:sample_size]],
+        "right_sample": [block.text for block in right[:sample_size]],
+        "reading_order_sample": [block.text for block in ordered_blocks[:sample_size]],
+    }
+
+
 def summarize_b1_range(path: Path = DEFAULT_SOURCE) -> dict:
     pages = load_bulletin(path)
     start_page, end_page = detect_b1_page_range(pages)
@@ -58,4 +80,5 @@ def summarize_b1_range(path: Path = DEFAULT_SOURCE) -> dict:
         "pages_found": len(selected_pages),
         "first_page": summarize_page(selected_pages[0]) if selected_pages else None,
         "last_page": summarize_page(selected_pages[-1]) if selected_pages else None,
+        "first_page_columns": summarize_columns(selected_pages[0]) if selected_pages else None,
     }
