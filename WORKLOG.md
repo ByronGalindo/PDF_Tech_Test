@@ -19,6 +19,8 @@ Short log:
 - Added the first output builder for the final `B -> 1` JSON shape.
 - Moved generated output to `solution/output` to keep test inputs untouched.
 - Added a basic validation pass for missing fields, duplicates, and field format.
+- Added a deeper raw-record analysis for cross-page and suspiciously short records.
+- Added validation directly against the generated JSON file in `solution/output`.
 
 Next:
 - inspect page layout,
@@ -42,6 +44,8 @@ Resumen corto:
 - Agregué el primer generador del JSON final con la forma `B -> 1`.
 - Dejé la salida generada en `solution/output` para no mezclarla con los insumos.
 - Agregué una validación básica para campos faltantes, duplicados y formato.
+- Agregué un análisis más fino de registros crudos para ver cruces de página y casos cortos.
+- Agregué validación directa sobre el JSON generado en `solution/output`.
 
 Siguiente:
 - revisar el layout de las páginas,

@@ -17,6 +17,14 @@ class RawRecord:
     def texts(self) -> list[str]:
         return [block.text for block in self.blocks]
 
+    @property
+    def pages(self) -> tuple[int, ...]:
+        return tuple(sorted({block.page for block in self.blocks}))
+
+    @property
+    def block_count(self) -> int:
+        return len(self.blocks)
+
 
 def iter_b1_blocks(pages: list[dict]) -> list[TextBlock]:
     blocks: list[TextBlock] = []
